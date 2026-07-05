@@ -1,0 +1,2 @@
+# mission from subPC 2026-06-18 15:02:48 (lat lon alt; deg deg m)
+36.1023471 129.3876620 2.00

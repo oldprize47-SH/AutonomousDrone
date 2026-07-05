@@ -1,0 +1,6 @@
+# arduino.app_utils is pre-installed on UNO Q
+#
+# pyrealsense2 is NOT pip-installable on this ARM64 board (no PyPI wheel).
+# Instead it is mounted into the container from the host via brick_compose.yaml
+# (see ~/ArduinoApps/AVC/brick_compose.yaml). Do not add pyrealsense2 here or
+# uv provisioning will fail with "No matching distribution found".

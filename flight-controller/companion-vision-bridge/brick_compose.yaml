@@ -1,0 +1,33 @@
+# brick_compose.yaml
+#
+# Exposes the host RealSense D435 (USB) and its librealsense / pyrealsense2
+# libraries into the App Lab "main" container so python/main.py can import
+# pyrealsense2 and read depth directly (no UDP/IPC workaround needed).
+#
+# Why this works on this board:
+#   - Container Python is 3.13.13 == host's pyrealsense2 .so ABI (cpython-313)
+#   - Container user 'arduino' is already in the 'video' group (gid 44)
+#   - pyrealsense2.so depends only on librealsense2.so.2.58 (everything else
+#     is standard system libs already present in the container)
+#
+# Deploy: copy this file to ~/ArduinoApps/AVC/brick_compose.yaml on the board,
+# then restart the app (arduino-app-cli app stop/start).
+
+services:
+  main:
+    # RealSense USB. Expose the whole USB bus because the device node can
+    # re-enumerate; also expose the V4L2 video nodes it presents.
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+      - /dev/video0:/dev/video0
+      - /dev/video1:/dev/video1
+
+    # Mount host RealSense libraries read-only (ABI matches container py3.13).
+    volumes:
+      - /usr/local/lib/python3.13/dist-packages/pyrealsense2:/usr/local/lib/python3.13/dist-packages/pyrealsense2:ro
+      - /usr/local/lib/librealsense2.so.2.58:/usr/local/lib/librealsense2.so.2.58:ro
+      - /usr/local/lib/librealsense2.so.2.58.1:/usr/local/lib/librealsense2.so.2.58.1:ro
+
+    environment:
+      - PYTHONPATH=/usr/local/lib/python3.13/dist-packages
+      - LD_LIBRARY_PATH=/usr/local/lib

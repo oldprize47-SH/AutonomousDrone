@@ -1,0 +1,30 @@
+.vs/
+.idea/
+.embedder/
+__pycache__/
+*.pyc
+
+build/
+build-cli/
+cmake-build-debug/
+out/
+slprj/
+.venv/
+
+*.exe
+*.dll
+*.so
+*.map
+*.zip
+*.part
+*.slxc
+
+*.log
+*.tmp
+*.bak
+OldVersions/
+
+# Raw experiment dumps are intentionally excluded from this portfolio repo.
+# Keep curated summary CSV/figures under development-report/experiment-results.
+raw-data/
+large-assets/

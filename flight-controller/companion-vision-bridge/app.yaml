@@ -1,0 +1,8 @@
+name: AVC Flight Controller
+description: "Quadrotor flight controller with MTi-680G INS, RC control, RTK GNSS, and P8 USART3 telemetry"
+icon: "\U0001F681"
+version: "2.0.0"
+
+ports: []
+
+bricks: []

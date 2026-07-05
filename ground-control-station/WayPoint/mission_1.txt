@@ -1,0 +1,4 @@
+# PNG mission - 단일 웨이포인트
+# RTK Fixed 기준 위치 (이 좌표로 드론을 보냄)
+# lat lon (decimal degrees), 한 줄에 하나, '#'은 주석
+36.1023276 129.3875710
