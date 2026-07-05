@@ -112,24 +112,47 @@ cmake --build build --config Release
 
 ## Experiment Results
 
-Representative result figures and summary CSVs are placed in `development-report/experiment-results`. Raw CSV logs were intentionally excluded because the original dataset is large; this repo keeps curated evidence suitable for review.
+Representative result figures were reorganized from the final report and source logs into `development-report/experiment-results`. The raw CSV dump is intentionally excluded; this repo keeps the plots, summary tables, and report-extracted figures needed to explain the development result.
 
-### Mission Guidance
+### Altitude Control
 
-![Circular mission analysis](development-report/experiment-results/0618_test_circular_4_analysis.png)
+The altitude controller was evaluated by comparing command tracking, controller output signals, and internal P/I terms between the flight experiment and simulation. The report notes that the controller followed the command trend, while the real response included more low-frequency drift and sensor/environment-driven fluctuation than simulation.
 
-![Circular mission turns](development-report/experiment-results/0618_test_circular_4_turns.png)
+![Altitude command tracking](development-report/experiment-results/altitude-control/altitude_command_tracking.png)
 
-### PNG Guidance And Yaw Response
+![Altitude controller outputs](development-report/experiment-results/altitude-control/altitude_controller_outputs.png)
 
-![PNG summary](development-report/experiment-results/_png_summary.png)
+### Attitude Control
 
-![Yaw response](development-report/experiment-results/_yaw_side_0618av3_seg1.png)
+The attitude-control validation focuses on roll/pitch/yaw-rate response and internal controller signals. The experimental response follows the commanded direction, but residual error, vibration, and internal command variation are larger than in simulation, showing where model refinement is still needed.
 
-The final mission summary files record mission duration, guidance time, landing time, waypoint count, range metrics, loop timing, RTK/GNSS availability, vision usage, and mission state transitions:
+![Yaw-rate response](development-report/experiment-results/attitude-control/yaw_rate_response.png)
 
-- `development-report/experiment-results/Final_mission_validation_summary.csv`
-- `development-report/experiment-results/Final_vision_landing_summary.csv`
+![Yaw-rate internal signals](development-report/experiment-results/attitude-control/yaw_rate_internal_signals.png)
+
+### Position And Guidance Control
+
+The mission controller combines position feedback, PNG waypoint guidance, circular guidance, and collision-avoidance logic. The final report evaluates waypoint approach, yaw-rate tracking, forward velocity tracking, circular-path tracking, and obstacle-avoidance behavior.
+
+![PNG guidance summary](development-report/experiment-results/position-guidance-control/png_summary.png)
+
+![Circular guidance path](development-report/experiment-results/position-guidance-control/circular_guidance_path.png)
+
+![Circular mission analysis](development-report/experiment-results/position-guidance-control/circular_mission_analysis.png)
+
+The final mission summary records mission duration, guidance time, landing time, waypoint count, range metrics, loop timing, RTK/GNSS availability, vision usage, and state transitions:
+
+- `development-report/experiment-results/position-guidance-control/Final_mission_validation_summary.csv`
+
+### Vision Landing
+
+The vision-landing pipeline detects and tracks the helipad with the UNO Q Linux-side vision process, then forwards target offsets to the MCU landing controller. The curated assets include the report pipeline diagram, dataset/labeling examples, detection examples, and final vision landing summary.
+
+![Vision landing pipeline](development-report/experiment-results/vision-landing/vision_landing_pipeline.png)
+
+![Helipad detection examples](development-report/experiment-results/vision-landing/helipad_detection_examples.jpeg)
+
+- `development-report/experiment-results/vision-landing/Final_vision_landing_summary.csv`
 
 ## Complementary Filter Study
 
