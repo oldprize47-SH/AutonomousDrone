@@ -15,6 +15,10 @@ The original course folder contained assignments, robot-arm work, raw logs, CAD 
 - final report diagrams and representative experiment results
 - complementary-filter study used as supporting sensor-fusion background
 
+## Demo
+
+- [Autonomous drone flight demo](https://www.youtube.com/watch?v=GLonDTGTSmQ)
+
 ## System Snapshot
 
 ![Hardware architecture](development-report/system-architecture/HW_Diagram_1.png)
