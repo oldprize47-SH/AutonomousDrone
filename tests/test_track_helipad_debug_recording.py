@@ -212,3 +212,11 @@ def test_compact_packet_valid_requires_fresh_confirmed_depth_measurement():
     )
     assert stale["valid"] is False
     assert stale["stm"]["valid"] is False
+
+    tracker_without_go = m.make_vision_packet(
+        3, 1.2, "CONFIRMED", False, "trk", 0.9, (10, 10, 20, 20),
+        1.0, -1.0, meas, 12, 3, 30.0, 20.0, 2, 100.0, None, args,
+    )
+    assert tracker_without_go["landing_go_advisory"] is False
+    assert tracker_without_go["valid"] is False
+    assert tracker_without_go["stm"]["valid"] is False

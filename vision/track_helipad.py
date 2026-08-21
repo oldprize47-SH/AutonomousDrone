@@ -625,7 +625,7 @@ def make_vision_packet(frame_idx, t_mono, state, go, src, score, bbox, az, el, m
     target_detected = bbox is not None
     target_fresh = src in ("det", "trk")
     measurement_valid = bool(
-        target_detected and target_fresh and state == "CONFIRMED" and
+        target_detected and target_fresh and state == "CONFIRMED" and bool(go) and
         meas is not None and meas.get("range_m") is not None and
         meas.get("center_distance_m") is not None
     )
@@ -904,7 +904,7 @@ def main():
                   f"Run once with --calibrate-center after assembly.", flush=True)
 
     if args.mp_det:
-        set_affinity(args.main_cores)   # 메인을 전용 코어로 고정(detection NN 경합 분리; Codex/Pro)
+        set_affinity(args.main_cores)   # detection worker와 CPU 경합을 줄이도록 메인 코어 분리
         gc.disable()                    # GC 스파이크로 인한 worst-case 튐 방지(측정/단기; 장기 비행은 주기적 gc.collect 설계 필요)
         lock_memory()                   # page fault 스파이크 제거(mlockall)
         set_rt_priority()               # 스케줄 지터 제거(SCHED_FIFO); 둘 다 root 권한 필요, 실패 시 무시
@@ -913,7 +913,7 @@ def main():
     gate = LandingGate(diag)
     det = None; proc = in_q = out_q = stop_ev = None
     if args.mp_det:
-        ctx = mp.get_context("spawn")              # fork 금지(NCNN/RealSense 핸들 상속 위험) — Codex 권고
+        ctx = mp.get_context("spawn")              # NCNN/RealSense 핸들을 fork로 상속하지 않음
         in_q = ctx.Queue(maxsize=1); out_q = ctx.Queue(maxsize=1)
         ready_ev = ctx.Event(); stop_ev = ctx.Event()
         proc = ctx.Process(target=detection_worker,
