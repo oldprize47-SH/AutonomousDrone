@@ -2,12 +2,19 @@
 
 [English overview](README.en.md) · [팀 프로젝트 fork](https://github.com/oldprize47-SH/Autonomous_Drone_Development)
 
-Intel RealSense D435, SSDLite/NCNN, LK optical flow와 Arduino Uno Q bridge를 연결해
-헬리패드의 **freshness-aware advisory target**을 생성한 자율착륙 비전 프로젝트입니다.
+자율이동체 수업의 팀 드론 프로젝트에서 맡은 카메라·비전 작업입니다. RealSense D435 영상에서 헬리패드를 찾고, 깊이 정보와 함께 상대 위치를 계산해 비행제어부로 전달했습니다. 이때 좌표뿐 아니라 관측이 최근에 얻어진 것인지, 사용할 수 있는 값인지도 함께 구분했습니다.
 
 > 팀 프로젝트 환경에서 저장한 헬리패드 검출 화면입니다. 이 저장소는 카메라·비전·Uno Q
 > bridge라는 개인 기여 범위만 다루며, 기체 전체나 flight-controller를 단독 구현했다고
 > 주장하지 않습니다.
+
+## 처음 읽는 분께
+
+이 프로젝트의 목표는 영상에 검출 상자를 표시하는 데서 끝나지 않습니다. 임베디드 보드의 계산량 안에서 작은 착륙 표식을 찾고, 다른 프로그램이 의미를 이해하고 사용할 수 있는 관측값으로 전달하는 것까지가 비전 부분의 역할입니다.
+
+아래에서는 데이터 준비와 모델 실행, 검출 사이 프레임의 추적, 좌표·유효성 전달 순서로 설명합니다. 코드부터 보고 싶다면 [track_helipad.py](vision/track_helipad.py)의 입력과 출력 흐름을 본 뒤 [bridge/main.py](bridge/main.py)에서 팀 시스템으로 넘기는 부분을 확인하면 됩니다. 기체 제어기와 전체 비행 결과는 개인 비전 작업과 구분해 읽어 주세요.
+
+2026년 9월 28일 정리한 코드에서 호스트 테스트 17개와 [중앙 깊이 진단 도구](deployment/center_depth.py)의 `--self-test`가 통과했습니다. 이 도구는 카메라 깊이값을 확인하기 위한 별도 진단 프로그램입니다. 소프트웨어 테스트 결과와 과거 비행 결과는 검증 대상이 다르며, 이번 문서 보완에서 카메라나 기체를 새로 구동하지 않았습니다.
 
 ## 한눈에 보기
 
