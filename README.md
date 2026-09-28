@@ -4,6 +4,32 @@
 
 ![Autonomous quadrotor platform](assets/drone-photos/drone_field_01.jpg)
 
+## Sangheon Park — contribution to this team project
+
+My responsibility was the camera and vision work: collecting and labelling helipad
+images, comparing and selecting lightweight models, preparing embedded inference,
+comparing detection/tracking approaches, and checking the relative-position and
+validity information supplied to the flight-control team. I used AI coding tools
+for implementation and experiments. The complete flight controller, ground-control
+station and every source file in this archive are not my individual work.
+
+This fork preserves the original team archive prepared by Kim Yejoon. The original
+author credit below is retained; this section identifies my contribution for
+portfolio readers.
+
+**Start with my area:** [vision landing results](development-report/experiment-results/vision-landing)
+and the [companion bridge](flight-controller/companion-vision-bridge/main.py).
+The bridge starts a separately deployed `track_helipad.py`; that detector/tracker
+implementation is maintained in my separate
+[vision portfolio repository](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/README.en.md).
+That repository includes the detector/tracker source, while model weights, private
+calibration and target-board dependencies are separate requirements. The bridge
+alone is not a self-contained reproduction of the vision pipeline.
+
+**Result boundary:** the team approached the landing target but did not achieve
+accurate marker-centre landing. Detection examples and offline accuracy do not
+establish successful autonomous landing.
+
 ## Overview
 
 This repository reorganizes the main development artifacts from an autonomous quadrotor project into a report-style engineering archive. The project integrates an Arduino UNO Q based flight controller, a Windows C++ ground-control station, onboard sensing, telemetry, mission guidance, and experimental validation data.
