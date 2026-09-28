@@ -14,6 +14,14 @@ The detector and tracker implementation is in my separate [RealSense vision repo
 
 The complete flight controller, ground-control station and aircraft are not my individual work. This fork preserves the original team archive prepared by Kim Yejoon and its author history.
 
+## Understanding the archive
+
+There are several separate parts to the team system. The onboard firmware reads sensors and runs the aircraft's control logic. The ground-control station is the desktop interface used to communicate with the system and inspect its state. The camera pipeline supplies target observations through a companion bridge. A successful test of one part is not automatically a successful integrated flight.
+
+For my contribution, begin with the linked RealSense repository, then read the companion bridge here to see where the vision output enters the team system. For the wider project, start with the final report and compare its discussion with the saved experiment plots. The firmware and ground-station folders provide implementation context, with the original team authorship preserved.
+
+During the vision work, the practical issue was not only detecting a helipad in an image. I also needed to prepare data, choose a model suited to the onboard computer, compare detection and tracking approaches, and check that the relative-position information and validity state were usable by the flight-control team. The team's final landing result remains separate from the offline detector evaluation.
+
 ## Results and files
 
 The team approached the landing target but did not achieve accurate marker-centre landing. Offline detection accuracy should not be interpreted as autonomous-landing success.
