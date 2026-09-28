@@ -1,67 +1,36 @@
-# RealSense landing-marker vision
+# RealSense Drone Vision
 
-**Camera and vision contribution to a university autonomous-vehicle team project.**
+I worked on the camera and vision software for a university autonomous-drone team project. My responsibilities included collecting and labelling helipad images, comparing lightweight detection models, preparing embedded inference and checking the target information sent to the flight controller. AI coding tools supported parts of the implementation and experiments.
 
-[한국어 상세 문서](README.md) · [Team project and flight demo](https://github.com/oldprize47-SH/Autonomous_Drone_Development)
+The [team repository](https://github.com/oldprize47-SH/Autonomous_Drone_Development) contains the aircraft and flight experiments. This repository contains my vision work; the complete aircraft and flight controller were team work.
 
-![RGB-D vision pipeline](docs/images/realsense-system-overview.svg)
+[한국어 상세 문서](README.ko.md)
 
-## What I worked on
+## Implementation
 
-I was responsible for the course team's camera and vision work: collecting and
-labelling helipad images, comparing lightweight models, preparing embedded
-inference, comparing detection and tracking approaches, and checking relative
-position and validity information passed to flight control. AI coding tools
-supported implementation and experiments. This repository documents that scope;
-it does not claim individual ownership of the complete aircraft or flight controller.
+The camera is an Intel RealSense D435. SSDLite/MobileNetV3-Small runs through NCNN, with LK optical flow between detection frames. Depth measurements provide relative target geometry. A validity check rejects stale observations before the Uno Q bridge forwards target offsets to the flight controller.
 
-## Engineering problem
+The main runtime is [vision/track_helipad.py](vision/track_helipad.py), and the bridge is [bridge/main.py](bridge/main.py). Data preparation, training and evaluation are kept in [tools/data-preparation](tools/data-preparation), [training](training) and [evaluation](evaluation).
 
-A distant landing marker occupies few pixels, while a larger detector input costs
-more computation on an embedded board. The pipeline uses SSDLite/MobileNetV3-Small
-with NCNN and LK optical flow between detection frames. RealSense depth provides
-geometry, and a validity/freshness gate controls advisory output to the Uno Q bridge.
+## Results
 
-```text
-RGB + depth -> detection and tracking -> validity gate -> relative geometry
-            -> latest JSON -> Uno Q bridge -> team's flight-control interface
+![Recorded detector evaluation on 65 local validation images](docs/images/detector-metric-summary.png)
+
+The recorded evaluation used 65 local validation images of one class. At confidence 0.5 and matching IoU 0.3, the detector found 61 true positives, with no false positives and four false negatives. Precision was 100%, recall 93.8% and F1 96.8%; mAP@0.5:0.95 was 72.2%.
+
+These results apply to that validation set. They do not establish performance under all flight conditions. A retrospective review of six trials with vision lock classified one as partial/near success. Repeatable precision landing was not demonstrated. See the [flight evaluation](docs/flight-evaluation-summary.md) for the recorded conditions.
+
+## Running and testing
+
+The repository does not distribute training data, model weights, NCNN model files or personal calibration. Camera inference needs a compatible RealSense/NCNN setup, and the bridge requires the Arduino Uno Q runtime.
+
+Hardware-independent tests can be run with:
+
+```sh
+python -m pip install -r requirements-test.txt
+python -m pytest -q
 ```
 
-The original team archive and this implementation serve different purposes:
-the [team fork](https://github.com/oldprize47-SH/Autonomous_Drone_Development)
-presents the system, diagrams and flight experiments; this repository focuses on
-vision source, data tools and evaluation boundaries.
+The [detailed Korean README](README.ko.md) contains the data layout and training, evaluation and runtime commands. Host tests do not reproduce the camera, MCU or flight system. No new camera or flight test was performed for this documentation update.
 
-## Code map
-
-| Entry | Purpose |
-|---|---|
-| [vision/track_helipad.py](vision/track_helipad.py) | Camera, NCNN detector, tracking and output pipeline |
-| [bridge/main.py](bridge/main.py) | Companion process and Uno Q bridge integration |
-| [training/train.py](training/train.py) | Detector training |
-| [evaluation/evaluate_detector.py](evaluation/evaluate_detector.py) | Local detector evaluation |
-| [tests](tests) | Host-side checks; see the detailed README for the recorded test scope |
-
-## Recorded results and limits
-
-The recorded detector evaluation used **65 local validation images with one class**.
-At confidence 0.5 and matching IoU 0.3, it reported 61 true positives, no false
-positives and four false negatives: precision 100%, recall 93.8% and F1 96.8%.
-Recorded mAP@0.5:0.95 was 72.2%. These values do not establish performance on
-independent subjects, backgrounds or flight conditions.
-
-The retrospective flight analysis classified only one of six trials with vision
-lock as partial/near success. Repeatable precision landing was not established.
-These historical results were not re-measured during this documentation update.
-
-## Reproduction boundary
-
-The repository contains source, but training data, trained weights, NCNN model
-artifacts and personal calibration are not distributed here. Camera inference
-requires compatible RealSense/NCNN dependencies and the target setup; bridge
-execution requires the Arduino Uno Q runtime. This is not a one-command hardware
-reproduction package.
-
-Use the [detailed README](README.md) for the existing data layout, training,
-evaluation and runtime commands. No camera, motor or flight command was executed
-for this portfolio presentation update.
+Source credits and distribution restrictions are described in [ATTRIBUTION.md](ATTRIBUTION.md) and [NOTICE.md](NOTICE.md).

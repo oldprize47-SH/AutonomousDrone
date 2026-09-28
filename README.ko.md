@@ -5,8 +5,6 @@
 Intel RealSense D435, SSDLite/NCNN, LK optical flow와 Arduino Uno Q bridge를 연결해
 헬리패드의 **freshness-aware advisory target**을 생성한 자율착륙 비전 프로젝트입니다.
 
-![RealSense RGB-D 입력에서 착륙 표식 좌표 전달까지의 전체 비전 파이프라인](docs/images/realsense-system-overview.svg)
-
 > 팀 프로젝트 환경에서 저장한 헬리패드 검출 화면입니다. 이 저장소는 카메라·비전·Uno Q
 > bridge라는 개인 기여 범위만 다루며, 기체 전체나 flight-controller를 단독 구현했다고
 > 주장하지 않습니다.
@@ -53,31 +51,7 @@ Intel RealSense D435, SSDLite/NCNN, LK optical flow와 Arduino Uno Q bridge를 �
 - STM/flight-controller 상태기계와 최종 제어기
 - 팀 보고서·발표자료·비행 영상과 다른 팀원의 코드
 
-## 아키텍처
-
-```mermaid
-flowchart LR
-    subgraph Offline[오프라인 데이터·학습 — 개인 범위]
-        HEIC[HEIC/JPG 및 D435 캡처] --> LABEL[4점 라벨링\n자동 라벨·수동 검수]
-        LABEL --> SPLIT[Train/Validation 분리]
-        SPLIT --> TRAIN[SSDLite 512 학습\nMobileNetV3-Small]
-        TRAIN --> PTH[PyTorch weight\n비공개]
-        PTH --> EVAL[65장 로컬 평가\nP/R/F1/AP/mAP]
-        PTH -. 별도 변환·parity 검증 필요 .-> NCNN[NCNN param/bin\n비공개]
-    end
-
-    subgraph Runtime[Uno Q 실시간 비전 — 개인 범위]
-        D435[RealSense D435\nRGB + depth] --> DET[SSDLite/NCNN detector]
-        NCNN --> DET
-        DET --> LK[LK optical-flow tracking]
-        LK --> GATE[Fail-closed LandingGate]
-        GATE --> FRD[Depth deprojection\nlevel-body FRD]
-        FRD --> JSON[Atomic compact JSON]
-        JSON --> BRIDGE[Arduino App bridge\nBridge.notify]
-    end
-
-    BRIDGE --> FC[팀 STM / flight controller]
-```
+## 관측값 처리
 
 `LandingGate`는 최근 detector 관측, 연속 유효 프레임, jitter, box 면적 변화와 detection
 age를 함께 확인합니다. tracker-only 예측은 화면상 추적을 이어갈 수는 있지만 `valid=1`을
