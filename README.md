@@ -1,8 +1,14 @@
 # Autonomous Drone Development
 
-> Autonomous Vehicle Control 26S - quadrotor flight-control, ground-control, mission guidance, and vision-assisted landing development archive.
+**A team-built quadrotor platform. My portfolio focus is its camera and vision pipeline.**
 
-![Autonomous quadrotor platform](assets/drone-photos/drone_field_01.jpg)
+[▶ Flight demonstration](https://www.youtube.com/watch?v=GLonDTGTSmQ) · [My vision implementation](https://github.com/oldprize47-SH/realsense-drone-vision) · [Full engineering archive](#overview)
+
+![Team quadrotor field prototype](assets/drone-photos/drone_field_01.jpg)
+
+| Platform | My responsibility | Observed outcome |
+|---|---|---|
+| Arduino Uno Q, onboard sensing and ground station | Helipad data, lightweight vision models, embedded inference and target validity | Approached the target; accurate marker-centre landing was not achieved |
 
 ## Sangheon Park — contribution to this team project
 
