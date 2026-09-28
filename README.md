@@ -1,5 +1,7 @@
 # RealSense 드론 비전
 
+[English overview](README.en.md) · [팀 프로젝트 fork](https://github.com/oldprize47-SH/Autonomous_Drone_Development)
+
 Intel RealSense D435, SSDLite/NCNN, LK optical flow와 Arduino Uno Q bridge를 연결해
 헬리패드의 **freshness-aware advisory target**을 생성한 자율착륙 비전 프로젝트입니다.
 
