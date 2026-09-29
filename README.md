@@ -5,6 +5,8 @@
 <a id="korean"></a>
 ## 한국어
 
+[코드 읽는 순서](#코드-따라-읽기)
+
 2026년 1학기 자율주행체 제어 프로젝트에서 8명의 팀원이 기체 제작부터 제어, 비전, 지상관제까지 함께 개발한 쿼드로터입니다. RealSense 카메라가 착륙 표식을 관측하고, 그 위치와 유효성을 비행제어부에 전달해 자율 임무에 활용하는 시스템을 만들었습니다. 이 저장소는 팀 플랫폼과 박상헌의 비전 구현을 한곳에서 따라볼 수 있도록 정리한 프로젝트 아카이브입니다.
 
 [비행 시연 영상](https://www.youtube.com/watch?v=GLonDTGTSmQ) · [팀 최종 보고서](development-report/final-report/AVC_26S_Final_Report.pdf)
@@ -13,9 +15,9 @@
 
 센서로 기체 상태를 파악하고, 제어기로 비행을 유지하며, 카메라가 제공하는 표적 정보를 이용해 착륙 목표에 접근하는 것이 목표였습니다. 지상관제 시스템은 명령 전달과 상태 확인을 맡습니다. 각 장치를 작동시키는 것에 더해, 서로 다른 하위 시스템이 같은 관측값의 의미와 사용 조건을 공유하도록 연결하는 데 초점을 두었습니다.
 
-![자율비행 드론 프로젝트 목표](docs/goals/project-focus-v1.png)
+![자율비행 드론 프로젝트 목표](docs/goals/goal.png)
 
-AI로 생성한 목표 설명용 개념 이미지입니다. 실제 기체 사진이나 측정 결과가 아닙니다.
+<sub>AI 생성 개념도</sub>
 
 센싱·제어·비전을 함께 다루는 로보틱스 교육과 감독하의 자율 동작 실험에 활용할 수 있는 사례입니다. 표식과 깊이 정보를 결합하는 방식은 로봇 도킹이나 표적 기준 상대 위치 추정에도 응용할 수 있지만, 다른 장치에 적용하려면 별도의 보정과 검증이 필요합니다. 이 프로젝트에서 반복 가능한 정밀 착륙은 입증하지 못했습니다.
 
@@ -61,7 +63,20 @@ RealSense D435의 깊이값은 영상 속 표적을 상대 위치로 바꾸는 �
 검출기 평가와 통합 비행은 서로 다른 수준의 결과입니다. 2026년 6월 27일 기록된 검출 평가는 **단일 클래스의 로컬 검증 영상 65장**을 사용했습니다. 신뢰도 0.5와 매칭 IoU 0.3에서 TP 61건, FP 0건, FN 4건이었습니다.
 
 | 검출 지표 | 기록값 |
-|---|---:|
+|---|### 코드 따라 읽기
+
+아래 순서는 파일의 역할과 연결을 이해하기 위한 안내입니다. 독립 과제나 보드별 프로그램은 한꺼번에 실행하지 않고 해당 항목의 실행 안내를 따릅니다.
+
+| 순서 | 파일 | 역할과 다음 단계 |
+|---|---|---|
+| 1 | [flight-controller/README.md](flight-controller/README.md) | 비행제어부의 디렉터리와 펌웨어 진입 구조부터 읽습니다. 세부 설치 안내는 이 문서의 연결을 따라갑니다. |
+| 2 | [vision-system/tools/data-preparation](vision-system/tools/data-preparation) | 학습 전 영상 수집, 라벨링·검수, 데이터 분리 도구의 순서를 확인합니다. |
+| 3 | [vision-system/training/train.py](vision-system/training/train.py) | 준비한 데이터와 모델 설정을 학습 단계에 연결합니다. 평가 도구는 별도 evaluation 폴더에 있습니다. |
+| 4 | [vision-system/vision/track_helipad.py](vision-system/vision/track_helipad.py) | 실시간 검출·추적·깊이 정보가 관측값으로 정리되는 흐름을 읽습니다. |
+| 5 | [flight-controller/companion-vision-bridge/main.py](flight-controller/companion-vision-bridge/main.py) | 비전 관측을 비행제어부에 전달하는 연결 지점입니다. 전체 시스템 설명과 메시지 경계를 함께 읽습니다. |
+| 6 | [vision-system/README.ko.md](vision-system/README.ko.md) | 카메라와 학습 환경의 상세 준비 절차는 기존 기술 가이드를 그대로 참고합니다. |
+
+---:|
 | Precision | 100% |
 | Recall | 93.8% |
 | F1 | 96.8% |
@@ -100,6 +115,8 @@ python deployment/center_depth.py --self-test
 <a id="english"></a>
 ## English
 
+[Code walkthrough](#code-walkthrough)
+
 This quadrotor was developed by an eight-member team for a university Autonomous Vehicle Control project in the first semester of 2026. The work brought together the aircraft, control system, vision and ground station: a RealSense camera observes the landing marker, then supplies its relative position and validity to the flight controller for autonomous missions. This archive brings the team platform and Sangheon Park's vision implementation together so that the complete path can be followed in one repository.
 
 [Flight demonstration](https://www.youtube.com/watch?v=GLonDTGTSmQ) · [Team final report](development-report/final-report/AVC_26S_Final_Report.pdf)
@@ -108,7 +125,7 @@ This quadrotor was developed by an eight-member team for a university Autonomous
 
 The goal was to sense the aircraft state, maintain flight through feedback control and approach a landing target using camera observations. The ground station handles commands and status monitoring. Alongside making each subsystem work, the project focused on connecting them through a shared understanding of what an observation means and when it can be used.
 
-The [project-goal illustration above](#korean) is an AI-generated concept image, not an aircraft photograph or a measured result.
+<sub>AI-generated concept illustration</sub>
 
 The project offers an example for robotics education and supervised experiments combining sensing, control and vision. Marker detection with depth could also be adapted to robot docking or target-relative positioning, with separate calibration and validation for each new setup. Repeatable precision landing was not demonstrated in this project.
 
@@ -189,3 +206,15 @@ python deployment/center_depth.py --self-test
 The [centre-depth diagnostic](vision-system/deployment/center_depth.py) can run its self-test without a connected camera. These tests and the ground-station build were not rerun for this README edit, and no new camera, board or flight validation was performed. Host tests do not reproduce camera timing, depth quality, MCU communications or closed-loop landing.
 
 Camera inference requires a compatible RealSense/NCNN environment, and the bridge needs the Uno Q Arduino App runtime. The vision module does not distribute raw training data, model weights, NCNN model files, personal calibration or original flight logs. See the [technical documentation](vision-system/README.ko.md) and [distribution notice](vision-system/NOTICE.md) for preparation requirements and usage boundaries.
+### Code walkthrough
+
+Use this order to understand each file and its connections. Independent exercises and board targets are not one executable; follow the relevant run instructions below.
+
+| Step | File | Role and next step |
+|---|---|---|
+| 1 | [flight-controller/README.md](flight-controller/README.md) | Begin with the controller layout and firmware entry points; follow its links for installation details. |
+| 2 | [vision-system/tools/data-preparation](vision-system/tools/data-preparation) | Before training, follow capture, labelling, review and dataset splitting tools. |
+| 3 | [vision-system/training/train.py](vision-system/training/train.py) | Connect prepared data and model settings to training; detector evaluation is a separate stage. |
+| 4 | [vision-system/vision/track_helipad.py](vision-system/vision/track_helipad.py) | Follow detection, tracking and depth through to the resulting observations. |
+| 5 | [flight-controller/companion-vision-bridge/main.py](flight-controller/companion-vision-bridge/main.py) | This is the handoff from vision observations to the controller; read it alongside the system and message documentation. |
+| 6 | [vision-system/README.ko.md](vision-system/README.ko.md) | Keep the existing technical guide as the detailed reference for camera and training setup. |
