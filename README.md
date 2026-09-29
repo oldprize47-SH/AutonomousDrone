@@ -1,4 +1,4 @@
-# 자율비행 드론 · Autonomous Drone
+# 자율비행 드론
 
 [한국어](#korean) · [English](#english)
 
