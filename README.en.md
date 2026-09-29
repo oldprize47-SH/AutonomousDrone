@@ -1,6 +1,6 @@
 # Landing Marker Vision
 
-This is the vision-code component of the [Autonomous Drone Project](https://github.com/oldprize47-SH/Autonomous_Drone_Development). The main README explains the whole project and this component together. Existing source paths and technical documentation remain here.
+This is the vision-code component of the [Autonomous Drone Project](https://github.com/oldprize47-SH/Autonomous_Drone_Development). The main README explains the whole project and this component together. You can continue to use the source paths and technical documentation here to explore the implementation.
 
 This is the vision component of a university autonomous-drone project. It detects and tracks a helipad in RealSense images, combines the observation with depth information and sends relative target information to the flight controller. The [team repository](https://github.com/oldprize47-SH/Autonomous_Drone_Development) describes the aircraft, control system, ground station and flight experiments.
 
@@ -16,13 +16,13 @@ AI-generated concept illustration. Device appearance, interface layout and examp
 
 ## Where it could be used
 
-The combination of marker detection, depth information and observation-validity checks could be adapted to robot docking or a laboratory target-relative positioning experiment. A controller would receive a target observation together with information needed to judge whether it is usable. Each new marker, camera arrangement and robot would need its own calibration and validation; a detected marker alone does not demonstrate a completed docking or landing manoeuvre.
+The combination of marker detection, depth information and observation-validity checks could be adapted to robot docking or a laboratory target-relative positioning experiment. A controller would receive a target observation together with information needed to judge whether it is usable. Each new marker, camera arrangement and robot would need its own calibration and validation. Detection establishes a target observation; completion of a docking or landing manoeuvre needs separate verification.
 
 ## At a glance
 
 ![RealSense target-observation flow](docs/flowcharts/vision.png)
 
-Overview reconstructed from the documented project and code. Results and verification limits are described below. [SVG](docs/flowcharts/vision.svg)
+Overview reconstructed from the documented project and code. The results below explain what was checked and where the verification limits remain. [SVG](docs/flowcharts/vision.svg)
 
 ## System configuration and team
 
@@ -40,15 +40,15 @@ The main runtime is [vision/track_helipad.py](vision/track_helipad.py), and the 
 
 ![Vision-to-controller flow from the original team report](docs/images/vision-flow-report.png)
 
-The left side describes the vision pipeline maintained in this repository. The right side belongs to the team's flight controller. The diagram describes the processing and interface, not a successful precision-landing result.
+The left side describes the vision pipeline maintained in this repository. The right side belongs to the team's flight controller. The diagram helps explain the processing and interface. It does not show a successful precision landing; the results below describe the actual tests.
 
 ### From an image to a target observation
 
 The detector locates the helipad in the RGB image. Between detector updates, Lucas–Kanade (LK) optical flow follows image features to maintain the target location without running the neural network on every frame. The depth image supplies a distance measurement near the detected target, and the runtime converts the image/depth observation into relative target information.
 
-The validity checks matter as much as the coordinates. The runtime checks the age and consistency of detector observations; tracking alone does not authorise a valid landing observation. The bridge reads the latest JSON record and forwards the observation to the Uno Q application. A stale or rejected observation must not be treated as a fresh target just because the last coordinates remain available.
+The validity checks matter as much as the coordinates. The runtime checks the age and consistency of detector observations; tracking alone does not authorise a valid landing observation. The bridge reads the latest JSON record and forwards the observation to the Uno Q application. When using this output, read the validity state alongside the coordinates. Even if the last coordinates remain available, a stale or rejected observation must not be used as a fresh target.
 
-For a code review, start with [vision/track_helipad.py](vision/track_helipad.py), then follow the output into [bridge/main.py](bridge/main.py). The [technical notes](docs/기술-요약.md) explain the coordinate conventions and validity rules. These rules are part of the vision interface, not proof that the complete aircraft can land safely.
+For a code review, start with [vision/track_helipad.py](vision/track_helipad.py), then follow the output into [bridge/main.py](bridge/main.py). The [technical notes](docs/기술-요약.md) explain the coordinate conventions and validity rules. These rules help explain how the vision interface handles observations. They do not establish that the complete aircraft can land safely; that requires separate validation.
 
 ## Results
 
@@ -58,7 +58,7 @@ The recorded evaluation used 65 local validation images of one class. At confide
 
 Precision describes how many reported detections were correct; recall describes how many labelled targets were found. The mAP value summarises detection performance across several overlap thresholds, so it is a different measure from the single-threshold precision and recall above.
 
-These results apply to that validation set. They do not establish performance under all flight conditions. A retrospective review of six trials with vision lock classified one as partial/near success. Repeatable precision landing was not demonstrated. See the [flight evaluation](docs/flight-evaluation-summary.md) for the recorded conditions.
+These results describe performance on the stated validation set. Performance across all flight conditions would need further validation. A retrospective review of six trials with vision lock classified one as partial/near success. Repeatable precision landing was not demonstrated. See the [flight evaluation](docs/flight-evaluation-summary.md) for the recorded conditions.
 
 ## Running and testing
 
@@ -77,9 +77,9 @@ The [detailed Korean README](README.ko.md) contains the data layout and training
 
 ### Choosing a starting point
 
-To understand the project without hardware, read the saved evaluation and run the host tests. To work with a camera, first check the RealSense dependencies and the standalone depth diagnostic before attempting the complete inference pipeline. To train or evaluate a detector, prepare your own compatible labelled data and model files; the repository's scripts do not supply those assets.
+If you are exploring without hardware, the saved evaluation and host tests are useful places to start. For camera work, begin by checking the RealSense dependencies and standalone depth diagnostic, then move on to the complete inference pipeline. Training or evaluating a detector requires compatible labelled data and model files that you prepare separately, as these assets are not included with the repository's scripts.
 
-The test requirements cover the host checks, not the full training or board environment. A passing host test means the exercised software contract behaves as expected. It does not reproduce camera timing, depth quality, inference speed or the team's flight results.
+When setting up an environment, use the test requirements for host checks and prepare the full training or board environment separately. A passing host test confirms the software behaviour exercised by that test; it does not reproduce camera timing, depth quality, inference speed or the team's flight results.
 
 Source credits and distribution restrictions are described in [ATTRIBUTION.md](ATTRIBUTION.md) and [NOTICE.md](NOTICE.md).
 

@@ -36,9 +36,9 @@ AI로 생성한 목표 설명용 개념 이미지입니다. 장치 외형과 화
 
 ## 처음 읽는 분께
 
-이 프로젝트의 목표는 영상에 검출 상자를 표시하는 데서 끝나지 않습니다. 임베디드 보드의 계산량 안에서 작은 착륙 표식을 찾고, 다른 프로그램이 의미를 이해하고 사용할 수 있는 관측값으로 전달하는 것까지가 비전 부분의 역할입니다.
+이 프로젝트를 읽을 때는 검출 상자에서 제어부에 전달할 관측값까지 이어지는 흐름을 살펴보면 도움이 됩니다. 비전 부분은 임베디드 보드의 계산량 안에서 작은 착륙 표식을 찾고, 다른 프로그램이 의미를 이해하고 사용할 수 있는 관측값으로 전달하는 역할을 맡습니다.
 
-아래에서는 데이터 준비와 모델 실행, 검출 사이 프레임의 추적, 좌표·유효성 전달 순서로 설명합니다. 코드부터 보고 싶다면 [track_helipad.py](vision/track_helipad.py)의 입력과 출력 흐름을 본 뒤 [bridge/main.py](bridge/main.py)에서 팀 시스템으로 넘기는 부분을 확인하면 됩니다. 기체 제어기와 전체 비행 결과는 팀 저장소에서 함께 확인할 수 있습니다.
+아래에서는 데이터 준비와 모델 실행, 검출 사이 프레임의 추적, 좌표·유효성 전달 순서로 설명합니다. 코드부터 살펴보고 싶다면 [track_helipad.py](vision/track_helipad.py)의 입력과 출력 흐름을 읽은 뒤 [bridge/main.py](bridge/main.py)에서 팀 시스템으로 전달되는 과정을 따라가는 순서를 권합니다. 기체 제어기와 전체 비행 결과는 팀 저장소에서 함께 확인할 수 있습니다.
 
 2026년 9월 28일 정리한 코드에서 호스트 테스트 17개와 [중앙 깊이 진단 도구](deployment/center_depth.py)의 `--self-test`가 통과했습니다. 이 도구는 카메라 깊이값을 확인하기 위한 별도 진단 프로그램입니다. 소프트웨어 테스트 결과와 과거 비행 결과는 검증 대상이 다르며, 이번 문서 보완에서 카메라나 기체를 새로 구동하지 않았습니다.
 
@@ -118,7 +118,7 @@ python tools/data-preparation/review_labels.py
 python tools/data-preparation/split_dataset.py --data-dir ./data --seed 42
 ```
 
-기본 데이터 레이아웃은 다음과 같으며 `data/`는 Git에서 제외됩니다.
+데이터를 준비할 때는 아래 기본 레이아웃을 참고할 수 있습니다. `data/`는 Git에서 제외됩니다.
 라벨은 정규화된 5열 bounding-box 텍스트 형식을 사용하지만, detector는 SSDLite이며
 YOLO/IMX500 학습·배포 코드는 이 저장소에 섞지 않았습니다.
 
@@ -182,8 +182,8 @@ runtime의 허용 임계값이 아닙니다.
 
 ## NCNN 런타임 → Uno Q bridge
 
-학습 weight, NCNN `.param`/`.bin`, 개인 calibration은 공개하지 않습니다. 호환 artifact와
-RealSense/NCNN 런타임이 준비된 환경에서는 다음 형태로 실행합니다.
+실행을 준비할 때는 학습 weight, NCNN `.param`/`.bin`, 개인 calibration을 별도로 마련해야 합니다.
+이 자료는 공개하지 않습니다. 호환 artifact와 RealSense/NCNN 런타임이 준비되면 다음 형태로 실행할 수 있습니다.
 
 ```bash
 python vision/track_helipad.py \
@@ -226,7 +226,7 @@ python deployment/bench_camera.py --frames 150
 유지했고 helipad residual은 약 0.113 m였지만, touchdown 전 제어기의 수평 오차가 약
 0.256 m 남았습니다. 다른 다섯 번은 하강 중 fresh vision이 사라지거나 수평 오차가 남았습니다.
 
-따라서 이 저장소는 반복 정밀착륙 성공을 주장하지 않습니다. 자세한 판정 규칙은
+이 기록에서는 반복 정밀착륙 성공까지 입증되지 않았습니다. 결과를 해석하는 데 필요한 자세한 판정 규칙은
 [비행 평가 요약](docs/flight-evaluation-summary.md)에 있습니다.
 
 ## 저장소 구조
@@ -301,7 +301,7 @@ runtime이 필요하므로 일반 pip requirements로 고정하지 않았습니�
 
 팀 산출물, 다른 팀원 코드, 얼굴이 보이는 montage, 비행 영상, 수업 보고서와 개인 식별정보는
 포함하지 않았습니다. 코드·이미지별 출처와 범위는 [ATTRIBUTION.md](ATTRIBUTION.md), 공개
-제한은 [NOTICE.md](NOTICE.md)를 참고하세요. 제3자 라이브러리는 각 소유자의 라이선스를 따릅니다.
+제한은 [NOTICE.md](NOTICE.md)에서 확인할 수 있습니다. 제3자 라이브러리는 각 소유자의 라이선스를 따릅니다.
 
 ## 보관된 프로젝트 자료
 
