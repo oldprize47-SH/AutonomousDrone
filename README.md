@@ -27,7 +27,7 @@ AI로 생성한 개념 이미지입니다. 장치 외형, 인터페이스 배치
 
 ![자율주행체 시스템 흐름](docs/flowcharts/autonomous.png)
 
-프로젝트 문서와 코드를 바탕으로 재구성한 개략도입니다. 결과와 검증의 한계는 아래에 설명합니다. [SVG](docs/flowcharts/autonomous.svg)
+프로젝트 문서와 코드를 바탕으로 재구성한 개략도입니다. 아래 결과 설명을 함께 읽으면 확인된 내용과 검증의 한계를 살펴볼 수 있습니다. [SVG](docs/flowcharts/autonomous.svg)
 
 ### 프로젝트 구성과 팀 역할
 
@@ -60,15 +60,15 @@ AI로 생성한 개념 이미지입니다. 장치 외형, 인터페이스 배치
 
 ### 아카이브 이해하기
 
-팀 시스템은 여러 부분으로 나뉩니다. 기체에 탑재한 펌웨어는 센서를 읽고 기체의 제어 로직을 실행합니다. 지상관제 시스템은 시스템과 통신하고 상태를 확인하는 데 사용하는 데스크톱 인터페이스입니다. 카메라 처리 파이프라인은 컴패니언 브리지를 통해 표적 관측값을 제공합니다. 한 부분의 시험에 성공했다고 해서 전체를 통합한 비행에도 성공한 것은 아닙니다.
+팀 시스템은 여러 부분으로 나뉩니다. 기체에 탑재한 펌웨어는 센서를 읽고 기체의 제어 로직을 실행합니다. 지상관제 시스템은 시스템과 통신하고 상태를 확인하는 데 사용하는 데스크톱 인터페이스입니다. 카메라 처리 파이프라인은 컴패니언 브리지를 통해 표적 관측값을 제공합니다. 결과를 읽을 때는 각 부분의 시험과 전체를 통합한 비행 시험을 구분하면 도움이 됩니다. 개별 시험의 성공만으로 통합 비행의 성공을 확인할 수는 없습니다.
 
-비전 구성요소를 살펴보려면 먼저 연결된 RealSense 저장소를 읽고, 이어서 이 저장소의 컴패니언 브리지를 확인해 그 출력이 팀 시스템의 어디로 들어가는지 살펴보세요. 프로젝트 전체를 이해하려면 최종 보고서부터 읽고, 보고서의 설명을 저장된 실험 그래프와 비교하면 됩니다. 펌웨어와 지상관제 시스템 폴더에서 구현 맥락을 확인할 수 있으며, 원래 팀의 저작 이력도 보존되어 있습니다.
+비전 구성요소를 살펴보려면 먼저 연결된 RealSense 저장소를 읽고, 이어서 이 저장소의 컴패니언 브리지를 확인해 그 출력이 팀 시스템의 어디로 들어가는지 따라가면 연결 관계를 이해하기 쉽습니다. 프로젝트 전체가 궁금하다면 최종 보고서부터 읽고, 설명을 저장된 실험 그래프와 함께 살펴보는 순서를 권합니다. 펌웨어와 지상관제 시스템 폴더에서 구현 맥락을 확인할 수 있으며, 원래 팀의 저작 이력도 보존되어 있습니다.
 
 비전 작업에서 실제로 다룬 문제는 이미지에서 헬리패드를 탐지하는 것만이 아니었습니다. 데이터 준비, 온보드 컴퓨터에 맞는 모델, 탐지 및 추적 방식의 비교, 상대 위치 정보와 유효성 상태를 비행제어 팀이 활용할 수 있는지에 대한 확인도 필요했습니다. 팀의 최종 착륙 결과는 오프라인 탐지기 평가와 구분해야 합니다.
 
 ### 결과와 파일
 
-팀은 착륙 목표에 접근했지만 마커 중심에 정확히 착륙하지는 못했습니다. 오프라인 탐지 정확도를 자율 착륙 성공으로 해석해서는 안 됩니다.
+팀은 착륙 목표에 접근했지만 마커 중심에 정확히 착륙하지는 못했습니다. 이 결과를 이해할 때는 오프라인 탐지 정확도와 실제 착륙 동작을 나누어 살펴보는 것이 도움이 됩니다. 탐지 정확도는 자율 착륙 성공을 입증하는 결과가 아닙니다.
 
 저장소에는 [펌웨어](flight-controller), [지상관제 시스템 소스](ground-control-station), [실험 결과](development-report/experiment-results), [최종 보고서](development-report/final-report/AVC_26S_Final_Report.pdf), 보조 자료인 [상보 필터 연구](complementary-filter)가 포함되어 있습니다.
 
@@ -113,13 +113,13 @@ AI로 생성한 개념도입니다. 장치의 외형, 인터페이스 배치와 
 
 #### 활용할 수 있는 분야
 
-표식 검출, 깊이 정보, 관측 유효성 검사를 결합한 방식은 로봇 도킹이나 실험실에서 수행하는 표적 기준 상대 위치 추정 실험에 맞게 응용할 수 있습니다. 제어기는 표적 관측값과 함께 그 관측값을 사용할 수 있는지 판단하는 데 필요한 정보를 받게 됩니다. 표식, 카메라 배치 또는 로봇이 달라지면 각각에 맞는 보정과 검증이 필요합니다. 표식이 검출되었다는 사실만으로 도킹이나 착륙 동작이 완료되었다고 볼 수는 없습니다.
+표식 검출, 깊이 정보, 관측 유효성 검사를 결합한 방식은 로봇 도킹이나 실험실에서 수행하는 표적 기준 상대 위치 추정 실험에 맞게 응용할 수 있습니다. 제어기는 표적 관측값과 함께 그 관측값을 사용할 수 있는지 판단하는 데 필요한 정보를 받게 됩니다. 표식, 카메라 배치 또는 로봇이 달라지면 각각에 맞는 보정과 검증이 필요합니다. 표식 검출은 표적 관측 단계의 결과이므로, 도킹이나 착륙 동작의 완료 여부는 별도로 확인해야 합니다.
 
 #### 한눈에 보기
 
 ![RealSense 표적 관측 흐름](https://raw.githubusercontent.com/oldprize47-SH/realsense-drone-vision/main/docs/flowcharts/vision.png)
 
-프로젝트 문서와 코드를 바탕으로 재구성한 개요입니다. 결과와 검증의 한계는 아래에 설명합니다. [SVG](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/docs/flowcharts/vision.svg)
+프로젝트 문서와 코드를 바탕으로 재구성한 개요입니다. 아래 결과 설명을 함께 읽으면 확인된 내용과 검증의 한계를 살펴볼 수 있습니다. [SVG](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/docs/flowcharts/vision.svg)
 
 #### 시스템 구성과 팀 역할
 
@@ -137,15 +137,15 @@ Sangheon Park(박상헌)은 영상 수집과 라벨링, 모델 비교, 임베디
 
 ![원본 팀 보고서의 비전-제어기 처리 흐름](https://raw.githubusercontent.com/oldprize47-SH/realsense-drone-vision/main/docs/images/vision-flow-report.png)
 
-왼쪽은 이 저장소에서 관리하는 비전 처리 파이프라인을 설명합니다. 오른쪽은 팀의 비행 제어기 영역입니다. 이 도식은 처리 과정과 인터페이스를 설명하는 것이며, 정밀 착륙에 성공했다는 결과를 나타내지 않습니다.
+왼쪽은 이 저장소에서 관리하는 비전 처리 파이프라인을 설명합니다. 오른쪽은 팀의 비행 제어기 영역입니다. 처리 과정과 인터페이스를 이해할 때 참고할 수 있는 도식입니다. 정밀 착륙 성공을 나타내는 결과는 아니므로, 실제 시험 내용은 아래 결과와 함께 살펴보면 됩니다.
 
 ##### 영상에서 표적 관측값을 얻기까지
 
 검출기는 RGB 영상에서 헬리패드의 위치를 찾습니다. 검출기가 결과를 갱신하는 사이에는 Lucas–Kanade(LK) 광학 흐름이 영상 특징점을 따라가며 표적 위치를 유지하므로, 매 프레임마다 신경망을 실행하지 않아도 됩니다. 깊이 영상은 검출된 표적 주변의 거리 측정값을 제공하며, 실행 코드는 영상과 깊이 관측값을 표적 상대 위치 정보로 변환합니다.
 
-유효성 검사는 좌표만큼 중요합니다. 실행 코드는 검출기 관측값의 경과 시간과 일관성을 확인합니다. 추적 결과만으로는 유효한 착륙 관측값으로 인정하지 않습니다. 브리지는 최신 JSON 레코드를 읽고 관측값을 Uno Q 애플리케이션으로 전달합니다. 마지막 좌표를 여전히 읽을 수 있다는 이유만으로, 오래되었거나 유효성 검사에서 거부된 관측값을 최신 표적 정보로 취급해서는 안 됩니다.
+유효성 검사는 좌표만큼 중요합니다. 실행 코드는 검출기 관측값의 경과 시간과 일관성을 확인합니다. 추적 결과만으로는 유효한 착륙 관측값으로 인정하지 않습니다. 브리지는 최신 JSON 레코드를 읽고 관측값을 Uno Q 애플리케이션으로 전달합니다. 이 출력을 사용할 때는 좌표와 유효성 상태를 함께 확인해야 합니다. 마지막 좌표가 남아 있더라도 오래되었거나 유효성 검사에서 거부된 관측값은 최신 표적 정보로 사용할 수 없습니다.
 
-코드를 검토할 때는 [vision/track_helipad.py](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/vision/track_helipad.py)부터 살펴본 뒤, 그 출력이 [bridge/main.py](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/bridge/main.py)로 전달되는 과정을 따라가면 됩니다. [기술 문서](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/docs/%EA%B8%B0%EC%88%A0-%EC%9A%94%EC%95%BD.md)에는 좌표 규약과 유효성 규칙이 설명되어 있습니다. 이러한 규칙은 비전 인터페이스의 일부이며, 전체 기체가 안전하게 착륙할 수 있다는 증거는 아닙니다.
+코드를 검토할 때는 [vision/track_helipad.py](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/vision/track_helipad.py)부터 살펴본 뒤, 그 출력이 [bridge/main.py](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/bridge/main.py)로 전달되는 과정을 따라가면 됩니다. [기술 문서](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/docs/%EA%B8%B0%EC%88%A0-%EC%9A%94%EC%95%BD.md)에는 좌표 규약과 유효성 규칙이 설명되어 있습니다. 이 규칙을 살펴보면 비전 인터페이스가 관측값을 다루는 방식을 이해할 수 있습니다. 전체 기체의 안전한 착륙 여부는 이 규칙만으로 입증되지 않으며 별도의 검증이 필요합니다.
 
 #### 결과
 
@@ -155,7 +155,7 @@ Sangheon Park(박상헌)은 영상 수집과 라벨링, 모델 비교, 임베디
 
 정밀도는 검출기가 보고한 검출 결과 중 실제로 올바른 결과의 비율을, 재현율은 라벨링된 표적 중 검출기가 찾아낸 표적의 비율을 나타냅니다. mAP는 여러 겹침 임계값에 걸친 검출 성능을 요약하므로, 위에서 제시한 단일 임계값의 정밀도·재현율과는 다른 지표입니다.
 
-이 결과는 해당 검증 데이터셋에 한정됩니다. 모든 비행 조건에서의 성능을 입증하지는 않습니다. 비전 락이 확보된 6회의 시도를 사후 검토한 결과, 1회가 부분 성공 또는 성공에 근접한 사례로 분류되었습니다. 반복 가능한 정밀 착륙은 입증되지 않았습니다. 기록된 조건은 [비행 평가](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/docs/flight-evaluation-summary.md)를 참고하세요.
+결과를 읽을 때는 해당 검증 데이터셋에서 확인한 성능으로 이해하면 됩니다. 모든 비행 조건에서의 성능은 이 평가만으로 입증되지 않습니다. 비전 락이 확보된 6회의 시도를 사후 검토한 결과, 1회가 부분 성공 또는 성공에 근접한 사례로 분류되었습니다. 반복 가능한 정밀 착륙은 입증되지 않았습니다. 기록된 조건은 [비행 평가](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/docs/flight-evaluation-summary.md)를 참고하세요.
 
 #### 실행과 테스트
 
@@ -174,9 +174,9 @@ python -m pytest -q
 
 ##### 시작 지점 선택
 
-하드웨어 없이 프로젝트를 이해하려면 저장된 평가 결과를 읽고 호스트 테스트를 실행하세요. 카메라를 사용하려면 전체 추론 파이프라인을 실행하기 전에 RealSense 의존성과 독립 실행형 깊이 진단 도구를 먼저 확인하세요. 검출기를 학습하거나 평가하려면 호환되는 라벨링 데이터와 모델 파일을 직접 준비해야 합니다. 저장소의 스크립트에는 이러한 자료가 포함되어 있지 않습니다.
+하드웨어 없이 시작한다면 저장된 평가 결과와 호스트 테스트부터 살펴보는 것이 도움이 됩니다. 카메라를 사용할 때는 RealSense 의존성과 독립 실행형 깊이 진단 도구를 먼저 확인한 뒤 전체 추론 파이프라인으로 이어갈 수 있습니다. 검출기의 학습이나 평가에 필요한 호환 라벨링 데이터와 모델 파일은 저장소의 스크립트에 포함되어 있지 않으므로 별도로 준비해야 합니다.
 
-테스트 의존성 목록은 호스트 검사를 위한 것이며, 전체 학습 환경이나 보드 실행 환경을 모두 포함하지 않습니다. 호스트 테스트 통과는 테스트에서 확인한 소프트웨어 동작 규약이 예상대로 작동한다는 뜻입니다. 카메라 타이밍, 깊이 품질, 추론 속도나 팀의 비행 결과를 재현한다는 뜻은 아닙니다.
+환경을 준비할 때는 테스트 의존성 목록이 호스트 검사 범위에 맞춰져 있다는 점을 참고하면 됩니다. 전체 학습 환경과 보드 실행 환경은 별도로 준비해야 합니다. 호스트 테스트 통과는 검사한 소프트웨어 동작 규약이 예상대로 작동한다는 뜻이며, 카메라 타이밍, 깊이 품질, 추론 속도나 팀의 비행 결과까지 재현하는 것은 아닙니다.
 
 출처 표기와 배포 제한 사항은 [ATTRIBUTION.md](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/ATTRIBUTION.md)와 [NOTICE.md](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/NOTICE.md)에 설명되어 있습니다.
 
@@ -215,7 +215,7 @@ The platform can be read as an integration example for robotics education: sensi
 
 ![Autonomous vehicle: system flow](docs/flowcharts/autonomous.png)
 
-Overview reconstructed from the documented project and code. Results and verification limits are described below. [SVG](docs/flowcharts/autonomous.svg)
+Overview reconstructed from the documented project and code. The results below explain what was checked and where the verification limits remain. [SVG](docs/flowcharts/autonomous.svg)
 
 ### Project configuration and team
 
@@ -248,15 +248,15 @@ These are the team's original diagrams. They explain the intended structure and 
 
 ### Understanding the archive
 
-There are several separate parts to the team system. The onboard firmware reads sensors and runs the aircraft's control logic. The ground-control station is the desktop interface used to communicate with the system and inspect its state. The camera pipeline supplies target observations through a companion bridge. A successful test of one part is not automatically a successful integrated flight.
+There are several separate parts to the team system. The onboard firmware reads sensors and runs the aircraft's control logic. The ground-control station is the desktop interface used to communicate with the system and inspect its state. The camera pipeline supplies target observations through a companion bridge. When reading the results, it helps to distinguish component tests from integrated flight tests. Success in a component test alone does not establish a successful integrated flight.
 
 To follow the vision component, begin with the linked RealSense repository, then read the companion bridge here to see where its output enters the team system. For the wider project, start with the final report and compare its discussion with the saved experiment plots. The firmware and ground-station folders provide implementation context, with the original team authorship preserved.
 
-During the vision work, the practical issue was not only detecting a helipad in an image. The vision component also required prepared data, a model suited to the onboard computer, comparisons of detection and tracking approaches, and checks that the relative-position information and validity state were usable by the flight-control team. The team's final landing result remains separate from the offline detector evaluation.
+The vision work involved detecting a helipad in an image and preparing that observation for use by the flight-control team. The vision component also required prepared data, a model suited to the onboard computer, comparisons of detection and tracking approaches, and checks that the relative-position information and validity state were usable by the flight-control team. The team's final landing result remains separate from the offline detector evaluation.
 
 ### Results and files
 
-The team approached the landing target but did not achieve accurate marker-centre landing. Offline detection accuracy should not be interpreted as autonomous-landing success.
+The team approached the landing target but did not achieve accurate marker-centre landing. To understand this result, consider offline detection accuracy separately from the actual landing behaviour: detection accuracy does not establish autonomous-landing success.
 
 The repository includes [firmware](flight-controller), [ground-control station source](ground-control-station), [experiment results](development-report/experiment-results), the [final report](development-report/final-report/AVC_26S_Final_Report.pdf) and a supporting [complementary-filter study](complementary-filter).
 
@@ -301,13 +301,13 @@ AI-generated concept illustration. Device appearance, interface layout and examp
 
 #### Where it could be used
 
-The combination of marker detection, depth information and observation-validity checks could be adapted to robot docking or a laboratory target-relative positioning experiment. A controller would receive a target observation together with information needed to judge whether it is usable. Each new marker, camera arrangement and robot would need its own calibration and validation; a detected marker alone does not demonstrate a completed docking or landing manoeuvre.
+The combination of marker detection, depth information and observation-validity checks could be adapted to robot docking or a laboratory target-relative positioning experiment. A controller would receive a target observation together with information needed to judge whether it is usable. Each new marker, camera arrangement and robot would need its own calibration and validation. Detection establishes a target observation; completion of a docking or landing manoeuvre needs separate verification.
 
 #### At a glance
 
 ![RealSense target-observation flow](https://raw.githubusercontent.com/oldprize47-SH/realsense-drone-vision/main/docs/flowcharts/vision.png)
 
-Overview reconstructed from the documented project and code. Results and verification limits are described below. [SVG](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/docs/flowcharts/vision.svg)
+Overview reconstructed from the documented project and code. The results below explain what was checked and where the verification limits remain. [SVG](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/docs/flowcharts/vision.svg)
 
 #### System configuration and team
 
@@ -325,15 +325,15 @@ The main runtime is [vision/track_helipad.py](https://github.com/oldprize47-SH/r
 
 ![Vision-to-controller flow from the original team report](https://raw.githubusercontent.com/oldprize47-SH/realsense-drone-vision/main/docs/images/vision-flow-report.png)
 
-The left side describes the vision pipeline maintained in this repository. The right side belongs to the team's flight controller. The diagram describes the processing and interface, not a successful precision-landing result.
+The left side describes the vision pipeline maintained in this repository. The right side belongs to the team's flight controller. The diagram helps explain the processing and interface. It does not show a successful precision landing; the results below describe the actual tests.
 
 ##### From an image to a target observation
 
 The detector locates the helipad in the RGB image. Between detector updates, Lucas–Kanade (LK) optical flow follows image features to maintain the target location without running the neural network on every frame. The depth image supplies a distance measurement near the detected target, and the runtime converts the image/depth observation into relative target information.
 
-The validity checks matter as much as the coordinates. The runtime checks the age and consistency of detector observations; tracking alone does not authorise a valid landing observation. The bridge reads the latest JSON record and forwards the observation to the Uno Q application. A stale or rejected observation must not be treated as a fresh target just because the last coordinates remain available.
+The validity checks matter as much as the coordinates. The runtime checks the age and consistency of detector observations; tracking alone does not authorise a valid landing observation. The bridge reads the latest JSON record and forwards the observation to the Uno Q application. When using this output, read the validity state alongside the coordinates. Even if the last coordinates remain available, a stale or rejected observation must not be used as a fresh target.
 
-For a code review, start with [vision/track_helipad.py](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/vision/track_helipad.py), then follow the output into [bridge/main.py](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/bridge/main.py). The [technical notes](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/docs/%EA%B8%B0%EC%88%A0-%EC%9A%94%EC%95%BD.md) explain the coordinate conventions and validity rules. These rules are part of the vision interface, not proof that the complete aircraft can land safely.
+For a code review, start with [vision/track_helipad.py](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/vision/track_helipad.py), then follow the output into [bridge/main.py](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/bridge/main.py). The [technical notes](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/docs/%EA%B8%B0%EC%88%A0-%EC%9A%94%EC%95%BD.md) explain the coordinate conventions and validity rules. These rules help explain how the vision interface handles observations. They do not establish that the complete aircraft can land safely; that requires separate validation.
 
 #### Results
 
@@ -343,7 +343,7 @@ The recorded evaluation used 65 local validation images of one class. At confide
 
 Precision describes how many reported detections were correct; recall describes how many labelled targets were found. The mAP value summarises detection performance across several overlap thresholds, so it is a different measure from the single-threshold precision and recall above.
 
-These results apply to that validation set. They do not establish performance under all flight conditions. A retrospective review of six trials with vision lock classified one as partial/near success. Repeatable precision landing was not demonstrated. See the [flight evaluation](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/docs/flight-evaluation-summary.md) for the recorded conditions.
+These results describe performance on the stated validation set. Performance across all flight conditions would need further validation. A retrospective review of six trials with vision lock classified one as partial/near success. Repeatable precision landing was not demonstrated. See the [flight evaluation](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/docs/flight-evaluation-summary.md) for the recorded conditions.
 
 #### Running and testing
 
@@ -362,9 +362,9 @@ The [detailed Korean README](https://github.com/oldprize47-SH/realsense-drone-vi
 
 ##### Choosing a starting point
 
-To understand the project without hardware, read the saved evaluation and run the host tests. To work with a camera, first check the RealSense dependencies and the standalone depth diagnostic before attempting the complete inference pipeline. To train or evaluate a detector, prepare your own compatible labelled data and model files; the repository's scripts do not supply those assets.
+If you are exploring without hardware, the saved evaluation and host tests are useful places to start. For camera work, begin by checking the RealSense dependencies and standalone depth diagnostic, then move on to the complete inference pipeline. Training or evaluating a detector requires compatible labelled data and model files that you prepare separately, as these assets are not included with the repository's scripts.
 
-The test requirements cover the host checks, not the full training or board environment. A passing host test means the exercised software contract behaves as expected. It does not reproduce camera timing, depth quality, inference speed or the team's flight results.
+When setting up an environment, use the test requirements for host checks and prepare the full training or board environment separately. A passing host test confirms the software behaviour exercised by that test; it does not reproduce camera timing, depth quality, inference speed or the team's flight results.
 
 Source credits and distribution restrictions are described in [ATTRIBUTION.md](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/ATTRIBUTION.md) and [NOTICE.md](https://github.com/oldprize47-SH/realsense-drone-vision/blob/main/NOTICE.md).
 
