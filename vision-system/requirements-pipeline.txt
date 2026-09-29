@@ -1,0 +1,11 @@
+# Data preparation, SSDLite training/evaluation, and desktop visualization.
+# Uno Q native NCNN, RealSense, and Arduino App packages are board/runtime provided.
+albumentations>=1.4,<3
+matplotlib>=3.8,<4
+numpy>=1.26,<3
+opencv-python>=4.9,<5
+pillow>=10,<12
+pillow-heif>=0.16,<2
+torch>=2.3,<3
+torchvision>=0.18,<1
+tqdm>=4.66,<5
