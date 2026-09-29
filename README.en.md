@@ -1,4 +1,6 @@
-# RealSense Drone Vision
+# Landing Marker Vision
+
+This is the vision-code component of the [Autonomous Drone Project](https://github.com/oldprize47-SH/Autonomous_Drone_Development). The main README explains the whole project and this component together. Existing source paths and technical documentation remain here.
 
 This is the vision component of a university autonomous-drone project. It detects and tracks a helipad in RealSense images, combines the observation with depth information and sends relative target information to the flight controller. The [team repository](https://github.com/oldprize47-SH/Autonomous_Drone_Development) describes the aircraft, control system, ground station and flight experiments.
 
